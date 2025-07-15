@@ -1,4 +1,11 @@
 package com.talant.bootcamp.customerservice.models.dto;
 
-public record CustomerDTO() { // whatever
-}
+import java.util.UUID;
+
+public record CustomerDTO(
+        UUID id,
+        String name
+        // password
+        // accounts
+        //etc
+) {}
