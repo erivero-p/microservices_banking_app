@@ -11,6 +11,7 @@ The Customer Service is responsible for managing user profiles in the Digital Ba
 ## Endpoints
 - `POST /customers` – Register a new customer
 - `GET /customers/{id}` – Retrieve customer details
+- `GET /customers`- Retrieve all customers
 - `PUT /customers/{id}` – Update customer profile
 
 ## Step-by-Step Development Plan
