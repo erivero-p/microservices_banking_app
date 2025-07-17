@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Service
 public class CustomersService implements ICustomerService {
-    
+
     @Override
     public boolean existsById(UUID id) {
         return false;
@@ -16,6 +16,7 @@ public class CustomersService implements ICustomerService {
 
     @Override
     public CustomerEntity createCustomer(CustomerDTO customerToCreate) {
+        //1. Validar que no exista con
         return null;
     }
 
