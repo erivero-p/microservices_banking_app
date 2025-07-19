@@ -15,4 +15,5 @@ public interface CustomerMapper {
 
     @Mapping(target="id", ignore = true)
     public CustomerDTO toDtoToShow(CustomerEntity entity);
+
 }
