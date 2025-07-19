@@ -1,5 +1,6 @@
 package com.talant.bootcamp.customerservice.controller;
 
+import com.talant.bootcamp.customerservice.exception.BadRequestException;
 import com.talant.bootcamp.customerservice.exception.CustomerNotFoundException;
 import com.talant.bootcamp.customerservice.models.entity.ApiError;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,14 @@ public class GlobalErrorController {
         return ApiError.builder()
                 .code(404)
                 .message("Customer not found.")
+                .build();
+    }
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleBadRequestException(BadRequestException exception){
+        return ApiError.builder()
+                .code(400)
+                .message(exception.getMessage())
                 .build();
     }
 

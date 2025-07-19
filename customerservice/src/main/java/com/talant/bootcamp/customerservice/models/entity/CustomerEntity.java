@@ -20,8 +20,7 @@ public class CustomerEntity {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @UniqueElements
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     // Default constructor
