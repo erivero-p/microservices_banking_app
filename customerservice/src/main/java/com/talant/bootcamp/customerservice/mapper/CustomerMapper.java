@@ -7,12 +7,12 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
-
-    CustomerDTO toDTO (CustomerEntity ce);
-
-    CustomerEntity toEntity(CustomerDTO dto);
+    public CustomerDTO toDTO(CustomerEntity entity);
+    public CustomerEntity toEntity(CustomerDTO dto);
 
     @Mapping(target="id", ignore = true)
-    CustomerEntity toEntityToCreate (CustomerDTO dto);
+    public CustomerEntity toEntityToCreate(CustomerDTO dto);
 
+    @Mapping(target="id", ignore = true)
+    public CustomerDTO toDtoToShow(CustomerEntity entity);
 }
