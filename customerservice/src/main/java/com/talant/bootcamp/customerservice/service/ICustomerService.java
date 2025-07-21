@@ -9,7 +9,7 @@ public interface ICustomerService {
 
     public boolean existsById(UUID id );
 
-    public CustomerEntity createCustomer(CustomerDTO customerToCreate);
+    public CustomerDTO createCustomer(CustomerDTO customerToCreate);
 
     public CustomerEntity getCustomer(UUID id);
 

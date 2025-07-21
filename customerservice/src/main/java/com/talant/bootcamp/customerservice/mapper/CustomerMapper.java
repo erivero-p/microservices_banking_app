@@ -13,7 +13,7 @@ public interface CustomerMapper {
     @Mapping(target="id", ignore = true)
     public CustomerEntity toEntityToCreate(CustomerDTO dto);
 
-    @Mapping(target="id", ignore = true)
+    //When more specific attributes are added to the DTO, then add the @Mapping
     public CustomerDTO toDtoToShow(CustomerEntity entity);
 
 }

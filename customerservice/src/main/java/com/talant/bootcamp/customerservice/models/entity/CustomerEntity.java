@@ -2,6 +2,7 @@ package com.talant.bootcamp.customerservice.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "customers")
+@EqualsAndHashCode
 public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,5 +57,7 @@ public class CustomerEntity {
     public LocalDate getBirthday(){ return this.birthday; }
 
     public void setBirthday(LocalDate birthday){ this.birthday = birthday; }
+
+
 
 }
