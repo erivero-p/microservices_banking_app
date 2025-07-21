@@ -20,7 +20,7 @@ public class CustomersController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CustomerDTO> getAllCustomers(){
-        return new ArrayList<>();
+        return customersService.getAllCustomers();
     }
 
     @PostMapping
