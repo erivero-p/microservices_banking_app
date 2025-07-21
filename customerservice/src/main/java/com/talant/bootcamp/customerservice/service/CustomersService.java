@@ -8,7 +8,9 @@ import com.talant.bootcamp.customerservice.repository.CustomersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomersService implements ICustomerService {
@@ -44,4 +46,13 @@ public class CustomersService implements ICustomerService {
     public CustomerEntity updateCustomer(CustomerDTO customer) {
         return null;
     }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers() {
+        return customersRepository.findAll().stream()
+                .map(customerMapper::toDTO)
+                .collect(Collectors.toList());
+
+    }
+
 }
