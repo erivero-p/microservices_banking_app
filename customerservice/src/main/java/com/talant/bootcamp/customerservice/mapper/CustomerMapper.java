@@ -5,6 +5,8 @@ import com.talant.bootcamp.customerservice.models.entity.CustomerEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
     public CustomerDTO toDTO(CustomerEntity entity);
