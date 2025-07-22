@@ -14,11 +14,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -122,6 +126,26 @@ public class CustomerServiceTest {
             assertThrows(BadRequestException.class, ()->{
                 customerService.createCustomer(customerDTO);
             });
+
+        }
+
+        @Test
+        @DisplayName("Should return all customers")
+        void shouldGetAllCustomers(){
+            //Given
+            List<CustomerEntity> customers = Arrays.asList(customerEntity);
+            when(customerRepository.findAll()).thenReturn(customers);
+            when(customerMapper.toDTO(customerEntity)).thenReturn(customerDTO);
+
+            //When
+            List<CustomerDTO> customerDTOs = customerService.getAllCustomers();
+
+            //Then
+            assertNotNull(customerDTOs);
+            assertEquals(1,customerDTOs.size());
+            System.out.println(customerDTOs);
+            assertEquals(customerEntity.getName(),customerDTOs.get(0).name());
+            verify(customerRepository).findAll();
 
         }
 
