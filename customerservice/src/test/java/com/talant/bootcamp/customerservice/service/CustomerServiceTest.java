@@ -1,5 +1,6 @@
 package com.talant.bootcamp.customerservice.service;
 
+import com.talant.bootcamp.customerservice.exception.BadRequestException;
 import com.talant.bootcamp.customerservice.mapper.CustomerMapper;
 import com.talant.bootcamp.customerservice.models.dto.CustomerDTO;
 import com.talant.bootcamp.customerservice.models.entity.CustomerEntity;
@@ -16,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -106,8 +106,22 @@ public class CustomerServiceTest {
             assertEquals(customerCreated.email(), customerDtoShow.email());
             assertEquals(customerCreated.birthday(), customerDtoShow.birthday());
 
+        }
+        @Test
+        @DisplayName("Should throw an exception when trying to add a new customer with a register email")
+        void emailAlreadyRegistered(){
+            setCustomerToCreate();
+            setCustomerToShow();
 
+            customerToAdd.setBirthday(LocalDate.now().minusYears(17));
 
+            //Arrange
+            when(customerRepository.existsByEmail(customerDTO.email())).thenReturn(true);
+
+            //Act & Assert
+            assertThrows(BadRequestException.class, ()->{
+                customerService.createCustomer(customerDTO);
+            });
 
         }
 
