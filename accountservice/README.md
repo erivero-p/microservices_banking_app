@@ -20,3 +20,7 @@ This microservice manages customer bank accounts. It supports operations such as
 3. Write unit tests for service logic and edge cases (e.g., negative deposits).
 4. Set up integration tests using a real Postgres instance.
 5. Make sure each endpoint is properly validated and covered.
+
+## Notes
+DATABASE: http://localhost:8080/h2-console
+with the help of application-test.yml in resources apply necessary data to connect to database.
