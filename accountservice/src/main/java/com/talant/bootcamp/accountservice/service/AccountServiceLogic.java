@@ -1,5 +1,7 @@
-package com.talant.bootcamp.accountservice.Service;
+package com.talant.bootcamp.accountservice.service;
 
+import com.talant.bootcamp.accountservice.repository.AccountServiceRepo;
+import com.talant.bootcamp.accountservice.model.AccountServiceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class AccountServiceLogic {
     public AccountServiceEntity createAccount(Long customerId) {
         AccountServiceEntity account = new AccountServiceEntity();
         account.setCustomerId(customerId);
+        account.setBalance(BigDecimal.ZERO);
         return repository.save(account);
     }
 
@@ -41,4 +44,3 @@ public class AccountServiceLogic {
         return repository.save(acc);
     }
 }
-

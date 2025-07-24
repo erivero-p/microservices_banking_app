@@ -1,7 +1,8 @@
-package com.talant.bootcamp.accountservice.Controllers;
+package com.talant.bootcamp.accountservice.controller;
 
-import com.talant.bootcamp.accountservice.Service.AccountServiceEntity;
-import com.talant.bootcamp.accountservice.Service.AccountServiceLogic;
+import com.talant.bootcamp.accountservice.model.AccountRequest;
+import com.talant.bootcamp.accountservice.model.AccountServiceEntity;
+import com.talant.bootcamp.accountservice.service.AccountServiceLogic;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +19,12 @@ public class AccountServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountServiceEntity> createAccount(@RequestParam Long customerId) {
-        return ResponseEntity.ok(service.createAccount(customerId));
+    public ResponseEntity<AccountServiceEntity> createAccount(@RequestBody AccountRequest request) {
+        return ResponseEntity.ok(service.createAccount(request.getCustomerId()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountServiceEntity> getAccount(@PathVariable Long id) {
+    public ResponseEntity<AccountServiceEntity> getAccount(@PathVariable ("id") Long id) {
         return ResponseEntity.ok(service.getAccount(id));
     }
 
@@ -33,7 +34,7 @@ public class AccountServiceController {
     }
 
     @PatchMapping("/{id}/withdraw")
-    public ResponseEntity<AccountServiceEntity> withdraw(@PathVariable Long id, @RequestParam BigDecimal amount) {
+    public ResponseEntity<AccountServiceEntity> withdraw(@PathVariable ("id") Long id, @RequestBody BigDecimal amount) {
         return ResponseEntity.ok(service.withdraw(id, amount));
     }
 }

@@ -1,14 +1,21 @@
-package com.talant.bootcamp.accountservice.Service;
+package com.talant.bootcamp.accountservice.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountServiceEntity {
 
     @Id
@@ -47,4 +54,3 @@ public class AccountServiceEntity {
 
     // Getters and setters
 }
-
