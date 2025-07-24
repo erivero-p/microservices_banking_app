@@ -18,6 +18,7 @@ import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -146,6 +147,23 @@ public class CustomerServiceTest {
             System.out.println(customerDTOs);
             assertEquals(customerEntity.getName(),customerDTOs.get(0).name());
             verify(customerRepository).findAll();
+
+        }
+
+        @Test
+        @DisplayName("Should get customer by id")
+        void shouldGetCustomerById(){
+            //Given
+            when(customerRepository.findById(customerEntity.getId())).thenReturn(Optional.of(customerEntity));
+            when(customerMapper.toDTO(customerEntity)).thenReturn(customerDTO);
+
+            //When
+            CustomerDTO customerDTO = customerService.getCustomer(customerEntity.getId());
+
+            //Then
+            assertNotNull(customerDTO);
+            assertEquals(customerEntity.getName(),customerDTO.name());
+            verify(customerRepository).findById(customerEntity.getId());
 
         }
 

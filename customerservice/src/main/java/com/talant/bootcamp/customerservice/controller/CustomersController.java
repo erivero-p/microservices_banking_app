@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/api/customers")
 @RestController
@@ -27,6 +28,11 @@ public class CustomersController {
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDTO createCustomer(@Valid @RequestBody CustomerDTO dto){
         return this.customersService.createCustomer(dto);
+    }
+
+    @GetMapping("/{id}")
+    public CustomerDTO getCustomerById(@PathVariable UUID id){
+        return customersService.getCustomer(id);
     }
 
 }

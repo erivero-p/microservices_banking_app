@@ -38,8 +38,10 @@ public class CustomersService implements ICustomerService {
     }
 
     @Override
-    public CustomerEntity getCustomer(UUID id) {
-        return null;
+    public CustomerDTO getCustomer(UUID id) {
+        CustomerEntity customer = customersRepository.findById(id)
+                .orElseThrow(()->new BadRequestException("Customer not found with ID: "+id));
+        return customerMapper.toDTO(customer);
     }
 
     @Override
