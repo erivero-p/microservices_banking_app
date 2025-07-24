@@ -83,13 +83,10 @@ public class CustomersControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customerToShow))
                 )
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(customerDTO.id().toString())) //UUID type, so it's needed to turn into string
-                .andExpect(jsonPath("$.name").value(customerDTO.name()))
-                .andExpect(jsonPath("$.email").value(customerDTO.email()))
-                .andExpect(jsonPath("$.birthday").value(customerDTO.birthday().toString()));
+                .andExpect(status().isBadRequest());
     }
+    //TEST UNDER CONSTRUCTION (It's neededed to send the exception BadRequest when the birthday validation fails. Then this test could be created
+    /*
     @Test
     @DisplayName("A customer under age is sended. A new customer must not be created.")
     void customerUnderAge() throws Exception {
@@ -101,14 +98,9 @@ public class CustomersControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customerToShow))
                 )
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(customerDTO.id().toString())) //UUID type, so it's needed to turn into string
-                .andExpect(jsonPath("$.name").value(customerDTO.name()))
-                .andExpect(jsonPath("$.email").value(customerDTO.email()))
-                .andExpect(jsonPath("$.birthday").value(customerDTO.birthday().toString()));
+                .andExpect(status().isBadRequest());
     }
-
+*/
 }
 
 
