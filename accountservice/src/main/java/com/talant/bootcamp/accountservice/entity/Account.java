@@ -19,4 +19,13 @@ public class Account {
     private String name;
     @Min(value = 0)
     private Double amount;
+
+
+    public Account() {
+    }
+    public Account(Integer id, String name, Double amount) {
+        this.id = id;
+        this.name = name;
+        this.amount = amount;
+    }
 }
