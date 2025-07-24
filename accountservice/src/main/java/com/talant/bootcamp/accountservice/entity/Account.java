@@ -23,6 +23,10 @@ public class Account {
 
     public Account() {
     }
+    public Account(String name, Double amount) {
+        this.name = name;
+        this.amount = amount;
+    }
     public Account(Integer id, String name, Double amount) {
         this.id = id;
         this.name = name;

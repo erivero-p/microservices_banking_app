@@ -25,6 +25,11 @@ public class AccountRequest{
         this.amount = amount;
     }
 
+    public AccountRequest(String testAccount, double v) {
+        this.name = testAccount;
+        this.amount = v;
+    }
+
     @Override
     public String toString() {
         return "AccountRequest{" +

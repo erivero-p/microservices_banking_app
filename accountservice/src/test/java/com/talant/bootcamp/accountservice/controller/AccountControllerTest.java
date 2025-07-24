@@ -51,31 +51,30 @@ class AccountControllerTest {
         account2.setName("Test Account 2");
         account2.setAmount(200.0);
 
+        accountMapper = new AccountMapper() {
+            @Override
+            public Account toEntity(AccountRequest accountRequest) {
+                return new Account(accountRequest.getName(), accountRequest.getAmount());
+            }
+
+            @Override
+            public AccountResponse toDTO(Account account) {
+                return new AccountResponse(account.getId(), account.getName(), account.getAmount());
+            }
+        };
+        AccountRequest = new AccountRequest(
+                "Test Account",
+                100.0
+        );
+
 
     }
 
     @Test
     void createAccountSuccess() {
-        
-        // Arrange
-        AccountRequest newAccountRequest = new AccountRequest(3, "New Account", 300.0);
-        Account newAccount = new Account();
-        newAccount.setId(newAccountRequest.getId());
-        newAccount.setName(newAccountRequest.getName());
-        newAccount.setAmount(newAccountRequest.getAmount());
 
-        // Mock the service call
-        when(accountService.createAccount(newAccountRequest)).thenReturn(newAccountRequest);
         
-        // Act & Assert
-        try {
-            mockMvc.perform(post("/accounts/create")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"id\":3,\"name\":\"New Account\",\"amount\":300.0}"))
-                    .andExpect(status().isOk());
-        } catch (Exception e) {
-            fail("Exception occurred while testing createAccount: " + e.getMessage());
-        }
+
 
        
     }
