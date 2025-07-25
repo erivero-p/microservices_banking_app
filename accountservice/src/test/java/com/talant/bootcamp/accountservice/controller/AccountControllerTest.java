@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AccountController.class)
@@ -32,7 +32,7 @@ class AccountControllerTest {
     private MockMvc mockMvc;
 
     private AccountMapper accountMapper;
-    private AccountRequest AccountRequest;
+    private AccountRequest accountRequest;
     private AccountResponse accountResponse;
     
     private Account account1;
@@ -41,15 +41,6 @@ class AccountControllerTest {
 
    @BeforeEach
     void setUp() {
-        // Initialize any necessary components or mock objects here
-        account1 = new Account();
-        account1.setId(1);
-        account1.setName("Test Account 1");
-        account1.setAmount(100.0);
-        account2 = new Account();
-        account2.setId(2);
-        account2.setName("Test Account 2");
-        account2.setAmount(200.0);
 
         accountMapper = new AccountMapper() {
             @Override
@@ -62,7 +53,13 @@ class AccountControllerTest {
                 return new AccountResponse(account.getId(), account.getName(), account.getAmount());
             }
         };
-        AccountRequest = new AccountRequest(
+        accountRequest = new AccountRequest(
+                "Test Account",
+                100.0
+        );
+
+        account1 = new Account(
+                1,
                 "Test Account",
                 100.0
         );
@@ -72,6 +69,16 @@ class AccountControllerTest {
 
     @Test
     void createAccountSuccess() {
+        when(accountService.createAccount(accountRequest)).thenReturn(accountMapper.toDTO(account1));
+
+        try {
+            mockMvc.perform(post("/accounts")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"name\":\"Test Account\",\"amount\":100.0}"))
+                    .andExpect(status().isCreated());
+        } catch (Exception e) {
+            fail("Exception occurred while testing createAccount: " + e.getMessage());
+        }
 
         
 
