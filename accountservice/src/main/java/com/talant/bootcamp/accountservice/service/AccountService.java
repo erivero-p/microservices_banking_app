@@ -7,6 +7,7 @@ import com.talant.bootcamp.accountservice.mapper.AccountMapper;
 import com.talant.bootcamp.accountservice.repository.AccountRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,8 +16,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountService {
 
-    private AccountMapper accountMapper;
-    private AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
+
+    private final AccountRepository accountRepository;
+
+
 
     public AccountResponse createAccount(@Valid AccountRequest accountRequest) {
         Account account = accountMapper.toEntity(accountRequest);

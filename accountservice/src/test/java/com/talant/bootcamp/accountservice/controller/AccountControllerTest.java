@@ -181,4 +181,16 @@ class AccountControllerTest {
                 .andExpect(content().string("Insufficient funds."))
                 .andReturn();
     }
+
+    @Test
+    void badFormedRequest() throws Exception {
+        // Simulate a bad request with missing fields
+        AccountRequest badRequest = new AccountRequest(null, -50.0);
+
+        mockMvc.perform(post("/accounts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(badRequest)))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
 }
