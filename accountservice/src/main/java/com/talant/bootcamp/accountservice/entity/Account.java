@@ -3,6 +3,7 @@ package com.talant.bootcamp.accountservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Account {
 
     @Id
@@ -30,4 +32,14 @@ public class Account {
 
     @PositiveOrZero(message = "Account balance cannot be negative")
     private long accountBalance;
+
+    //for test
+
+    public Account(UUID id, UUID customerId, LocalDate creationDate, AccountState accountState, long accountBalance) {
+        this.id = id;
+        this.customerId = customerId;
+        this.creationDate = creationDate;
+        this.accountState = accountState;
+        this.accountBalance = accountBalance;
+    }
 }
