@@ -43,4 +43,16 @@ public class AccountServiceLogic {
         acc.setBalance(acc.getBalance().subtract(amount));
         return repository.save(acc);
     }
+
+    public AccountServiceEntity withDrawToOther(Long id, BigDecimal amount, Long SecondId){
+        if(amount.signum() <= 0) throw new IllegalArgumentException("WITH DRAW MUST BE POSITIVE");
+        AccountServiceEntity sender = getAccount(id);
+        AccountServiceEntity reciber = getAccount(SecondId);
+        if(sender.getBalance().compareTo(amount)<0)
+            throw new IllegalArgumentException("Insufficient funds");
+        sender.setBalance(sender.getBalance().subtract(amount));
+        reciber.setBalance(reciber.getBalance().add(amount));
+        repository.save(sender);
+        return repository.save(reciber);
+    }
 }

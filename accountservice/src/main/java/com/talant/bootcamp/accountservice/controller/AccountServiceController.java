@@ -34,7 +34,12 @@ public class AccountServiceController {
     }
 
     @PatchMapping("/{id}/withdraw")
-    public ResponseEntity<AccountServiceEntity> withdraw(@PathVariable ("id") Long id, @RequestBody BigDecimal amount) {
+    public ResponseEntity<AccountServiceEntity> withdraw(@PathVariable ("id") Long id, @RequestParam BigDecimal amount) {
         return ResponseEntity.ok(service.withdraw(id, amount));
+    }
+
+    @PatchMapping("{id}/withdraw/Other")
+    public ResponseEntity<AccountServiceEntity> withdrawNext(@PathVariable ("id") Long id, @RequestParam Long secondId,@RequestParam BigDecimal amount){
+        return ResponseEntity.ok(service.withDrawToOther(id,amount,secondId));
     }
 }
