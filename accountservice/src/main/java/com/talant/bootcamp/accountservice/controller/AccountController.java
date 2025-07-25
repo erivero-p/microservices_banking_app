@@ -21,8 +21,8 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(
             @Valid
-            @RequestBody AccountRequest AccountRequest) {
-        AccountResponse accountResponse = accountService.createAccount(AccountRequest);
+            @RequestBody AccountRequest accountRequest) {
+        AccountResponse accountResponse = accountService.createAccount(accountRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(accountResponse);
     }
 
@@ -41,6 +41,24 @@ public class AccountController {
     public ResponseEntity<AccountResponse> withdrawFromAccount(@PathVariable Integer id,
                                                        @RequestParam Double amount) {
         return ResponseEntity.ok(accountService.withdraw(id, amount));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        switch (ex.getMessage()){
+            case "Account not found.":
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            case "Account already exists.":
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+
+            case "Deposit amount must be greater than zero.", "Insufficient funds.":
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+            default:
+                log.error("Unexpected error: {}", ex.getMessage(), ex);
+                break;
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 
 }

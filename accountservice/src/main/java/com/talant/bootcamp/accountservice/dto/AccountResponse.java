@@ -7,13 +7,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AccountResponse {
-    private int id;
+    private Integer id;
     private String name;
-    private double amount;
+    private Double amount;
     public AccountResponse() {
     }
 
-    public AccountResponse(int id, String name, double amount) {
+    public AccountResponse(Integer id, String name, Double amount) {
         this.id = id;
         this.name = name;
         this.amount = amount;

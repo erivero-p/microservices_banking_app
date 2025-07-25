@@ -24,7 +24,7 @@ public class AccountRequest{
         this.amount = amount;
     }
 
-    public AccountRequest(String testAccount, double v) {
+    public AccountRequest(String testAccount, Double v) {
         this.name = testAccount;
         this.amount = v;
     }

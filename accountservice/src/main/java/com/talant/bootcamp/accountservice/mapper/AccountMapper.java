@@ -8,6 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
 
-    Account toEntity(AccountRequest AccountRequest);
+    Account toEntity(AccountRequest accountRequest);
     AccountResponse toDTO(Account account);
 }

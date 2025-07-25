@@ -18,8 +18,12 @@ public class AccountService {
     private AccountMapper accountMapper;
     private AccountRepository accountRepository;
 
-    public AccountResponse createAccount(@Valid AccountRequest AccountRequest) {
-        Account account = accountMapper.toEntity(AccountRequest);
+    public AccountResponse createAccount(@Valid AccountRequest accountRequest) {
+        Account account = accountMapper.toEntity(accountRequest);
+        //if account already exists, throw an exception
+        if( accountRepository.existsById(account.getId())){
+            throw new RuntimeException("Account already exists.");
+        }
         return accountMapper.toDTO(
                 accountRepository.save(account));
     }
@@ -33,6 +37,9 @@ public class AccountService {
     public AccountResponse deposit(Integer id, Double amount) {
         Account account =  accountRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Account not found."));
+        if (amount <= 0) {
+            throw new RuntimeException("Deposit amount must be greater than zero.");
+        }
         account.setAmount(account.getAmount() + amount);
         return accountMapper.toDTO(accountRepository.save(account));
     }
@@ -40,6 +47,9 @@ public class AccountService {
     public AccountResponse withdraw(Integer id, Double amount) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Account not found."));
+        if (account.getAmount() < amount) {
+            throw new RuntimeException("Insufficient funds.");
+        }
         account.setAmount(account.getAmount() - amount);
         return accountMapper.toDTO(accountRepository.save(account));
     }
