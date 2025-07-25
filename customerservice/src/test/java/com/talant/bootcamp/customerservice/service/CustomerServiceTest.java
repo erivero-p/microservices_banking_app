@@ -148,7 +148,43 @@ public class CustomerServiceTest {
             verify(customerRepository).findAll();
 
         }
+        @Test
+        @DisplayName("Should update an existing customer successfully")
+        void shouldUpdateCustomer() {
+            // Arrange: modificamos el email del DTO original
+            CustomerDTO updatedDTO = new CustomerDTO(
+                    customerDTO.id(),
+                    customerDTO.name(),
+                    customerDTO.birthday(),
+                    "nuevoemail@example.com" // nuevo email
+            );
 
+            CustomerDTO expectedDTO = new CustomerDTO(
+                    customerDTO.id(),
+                    customerDTO.name(),
+                    customerDTO.birthday(),
+                    updatedDTO.email() // esperamos el nuevo email
+            );
+
+            when(customerRepository.findById(customerDTO.id())).thenReturn(java.util.Optional.of(customerEntity));
+            when(customerRepository.existsByEmail(updatedDTO.email())).thenReturn(false);
+            when(customerRepository.save(any(CustomerEntity.class))).thenReturn(customerEntity);
+            when(customerMapper.toDtoToShow(customerEntity)).thenReturn(expectedDTO);
+
+            // Act
+            CustomerDTO result = customerService.updateCustomer(updatedDTO);
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(expectedDTO.id(), result.id());
+            assertEquals(expectedDTO.name(), result.name());
+            assertEquals(expectedDTO.birthday(), result.birthday());
+            assertEquals(expectedDTO.email(), result.email());
+
+            // Verificaciones clave
+            verify(customerRepository).save(any(CustomerEntity.class));
+            verify(customerMapper).toDtoToShow(any(CustomerEntity.class));
+        }
     }
 
 

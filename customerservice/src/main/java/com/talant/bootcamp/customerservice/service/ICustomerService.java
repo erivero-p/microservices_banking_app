@@ -14,7 +14,7 @@ public interface ICustomerService {
 
     public CustomerEntity getCustomer(UUID id);
 
-    public CustomerEntity updateCustomer(CustomerDTO customer);
+    public CustomerDTO updateCustomer(CustomerDTO customer);
 
     public List<CustomerDTO> getAllCustomers();
 
