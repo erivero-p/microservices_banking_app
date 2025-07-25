@@ -12,7 +12,7 @@ public interface ICustomerService {
 
     public CustomerDTO createCustomer(CustomerDTO customerToCreate);
 
-    public CustomerEntity getCustomer(UUID id);
+    public CustomerDTO getCustomer(UUID id);
 
     public CustomerDTO updateCustomer(CustomerDTO customer);
 

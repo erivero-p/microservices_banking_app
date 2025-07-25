@@ -14,5 +14,6 @@ public interface CustomersRepository extends JpaRepository<CustomerEntity, UUID>
     boolean existsByEmail(String email);
 
     List<CustomerEntity> findAll();
+
 }
 

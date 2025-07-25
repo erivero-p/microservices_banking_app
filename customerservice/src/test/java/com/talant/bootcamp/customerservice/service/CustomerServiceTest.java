@@ -185,6 +185,23 @@ public class CustomerServiceTest {
             verify(customerRepository).save(any(CustomerEntity.class));
             verify(customerMapper).toDtoToShow(any(CustomerEntity.class));
         }
+        @Test
+        @DisplayName("Should get customer by id")
+        void shouldGetCustomerById(){
+            //Given
+            when(customerRepository.findById(customerEntity.getId())).thenReturn(Optional.of(customerEntity));
+            when(customerMapper.toDTO(customerEntity)).thenReturn(customerDTO);
+
+            //When
+            CustomerDTO customerDTO = customerService.getCustomer(customerEntity.getId());
+
+            //Then
+            assertNotNull(customerDTO);
+            assertEquals(customerEntity.getName(),customerDTO.name());
+            verify(customerRepository).findById(customerEntity.getId());
+
+        }
+
     }
 
 

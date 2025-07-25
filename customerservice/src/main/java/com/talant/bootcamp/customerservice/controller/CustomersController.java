@@ -30,6 +30,11 @@ public class CustomersController {
         return this.customersService.createCustomer(dto);
     }
 
+    @GetMapping("/{id}")
+    public CustomerDTO getCustomerById(@PathVariable UUID id){
+        return customersService.getCustomer(id);
+    }
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CustomerDTO updateCustomer(@PathVariable UUID id, @Valid @RequestBody CustomerDTO dto) {

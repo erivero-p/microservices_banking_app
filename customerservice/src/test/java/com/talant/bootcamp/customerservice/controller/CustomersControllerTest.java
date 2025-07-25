@@ -3,6 +3,7 @@ package com.talant.bootcamp.customerservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.talant.bootcamp.customerservice.exception.BadRequestException;
 import com.talant.bootcamp.customerservice.mapper.CustomerMapper;
 import com.talant.bootcamp.customerservice.mapper.CustomerMapperImpl;
 import com.talant.bootcamp.customerservice.models.dto.CustomerDTO;
@@ -71,7 +72,35 @@ public class CustomersControllerTest {
                 .andExpect(jsonPath("$.email").value(customerDTO.email()))
                 .andExpect(jsonPath("$.birthday").value(customerDTO.birthday().toString()));
     }
+    @Test
+    @DisplayName("The customer email is already in use. A new customer must not be created.")
+    void customerEmailAlreadyInUse() throws Exception {
+        //Given
+        when(service.createCustomer(any(CustomerDTO.class))).thenThrow(BadRequestException.class);
 
+        //When & Then
+        mockMvc.perform(post("/api/customers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerToShow))
+                )
+                .andExpect(status().isBadRequest());
+    }
+    //TEST UNDER CONSTRUCTION (It's neededed to send the exception BadRequest when the birthday validation fails. Then this test could be created
+    /*
+    @Test
+    @DisplayName("A customer under age is sended. A new customer must not be created.")
+    void customerUnderAge() throws Exception {
+        //Given
+        when(service.createCustomer(any(CustomerDTO.class))).thenThrow();
+
+        //When & Then
+        mockMvc.perform(post("/api/customers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerToShow))
+                )
+                .andExpect(status().isBadRequest());
+    }
+*/
 }
 
 
