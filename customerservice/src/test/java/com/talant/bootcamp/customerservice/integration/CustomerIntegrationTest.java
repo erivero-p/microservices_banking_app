@@ -56,11 +56,10 @@ public class CustomerIntegrationTest {
         customerEntity.setName("Julio");
         customerEntity.setEmail("julito@example.com");
         customerEntity.setBirthday(LocalDate.now().minusYears(18));
-        customerEntity.setId(UUID.randomUUID());
 
         //Set standard customer DTO
          customerDTO = new CustomerDTO(
-                customerEntity.getId(),
+                 null,
                 customerEntity.getName(),
                 customerEntity.getBirthday(),
                 customerEntity.getEmail()
@@ -74,7 +73,6 @@ public class CustomerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(customerDTO.id().toString())) //UUID type, so it's needed to turn into string
                 .andExpect(jsonPath("$.name").value(customerDTO.name()))
                 .andExpect(jsonPath("$.email").value(customerDTO.email()))
                 .andExpect(jsonPath("$.birthday").value(customerDTO.birthday().toString()))
@@ -86,7 +84,7 @@ public class CustomerIntegrationTest {
 
         mockMvc.perform(get("/api/customers/"+customerDTO1.id()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(customerDTO1.id()))
+                .andExpect(jsonPath("$.id").value(customerDTO1.id().toString()))
                 .andExpect(jsonPath("$.name").value(customerDTO1.name()));
 
     }
