@@ -45,9 +45,23 @@ public class CustomersService implements ICustomerService {
     }
 
     @Override
-    public CustomerEntity updateCustomer(CustomerDTO customer) {
-        return null;
+    public CustomerDTO updateCustomer(CustomerDTO customer) {
+
+        CustomerEntity existing = customersRepository.findById(customer.id())
+                .orElseThrow(() -> new BadRequestException("Customer not found"));
+
+        if (!existing.getEmail().equals(customer.email()) && customersRepository.existsByEmail(customer.email())) {
+            throw new BadRequestException("Customer email already in use");
+        }
+
+        existing.setName(customer.name());
+        existing.setBirthday(customer.birthday());
+        existing.setEmail(customer.email());
+
+        CustomerEntity updated = customersRepository.save(existing);
+        return customerMapper.toDtoToShow(updated);
     }
+
 
     @Override
     public List<CustomerDTO> getAllCustomers() {

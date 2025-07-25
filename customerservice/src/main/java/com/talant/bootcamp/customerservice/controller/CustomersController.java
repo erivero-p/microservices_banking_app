@@ -35,4 +35,16 @@ public class CustomersController {
         return customersService.getCustomer(id);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDTO updateCustomer(@PathVariable UUID id, @Valid @RequestBody CustomerDTO dto) {
+        CustomerDTO dtoToUpdate = new CustomerDTO(
+                id,
+                dto.name(),
+                dto.birthday(),
+                dto.email()
+        );
+        return customersService.updateCustomer(dtoToUpdate);
+    }
+
 }
