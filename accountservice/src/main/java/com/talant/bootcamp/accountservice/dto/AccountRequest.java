@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class AccountRequest{
-    @NotBlank(message = "ID cannot be blank")
     private Integer id;
     @NotBlank(message = "Name cannot be blank")
     private String name;
