@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,13 +87,96 @@ class AccountServiceTest {
 
     @Test
     void findById() {
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.ofNullable(account));
+        when(accountMapper.toAccountDTO(account)).thenReturn(request);
+
+        AccountDTO response = accountService.findById(account.getId());
+
+        assertNotNull(response);
+        assertEquals(account.getId(), response.id());
+        assertEquals(account.getAccountBalance(), response.accountBalance());
+        assertEquals(account.getAccountState(), response.accountState());
+        assertEquals(account.getCreationDate(), response.creationDate());
+        assertEquals(account.getCustomerId(), response.customerId());
     }
 
     @Test
-    void delete() {
+    void findByIdDoesNotExist() {
+        UUID id = UUID.randomUUID();
+
+        when(accountRepository.findById(id)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            accountService.findById(id);
+        });
+
+        assertEquals("Customer not found: " + id, exception.getMessage());
     }
 
     @Test
-    void adjustBalance() {
+    void shouldDeleteAccountWhenExists() {
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+
+        accountService.delete(account.getId());
+
+        verify(accountRepository).delete(account);
     }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingNonExistingAccount() {
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> accountService.delete(account.getId()));
+
+        assertEquals("Customer not found: " + account.getId(), exception.getMessage());
+    }
+
+    @Test
+    void shouldAdjustBalanceSuccessfully() {
+        UUID id = account.getId();
+        long adjustment = 500L;
+
+        when(accountRepository.findById(id)).thenReturn(Optional.of(account));
+        Account updatedAccount = new Account(account.getId(), account.getCustomerId(), account.getCreationDate(), account.getAccountState(), account.getAccountBalance() + adjustment);
+        when(accountRepository.save(account)).thenReturn(updatedAccount);
+
+        when(accountMapper.toAccountDTO(updatedAccount)).thenReturn(request);
+
+        AccountDTO result = accountService.adjustBalance(id, adjustment);
+
+        assertNotNull(result);
+        assertEquals(request.id(), result.id());
+        verify(accountRepository).save(account);
+        assertEquals(500L,
+                account.getAccountBalance());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAdjustingBalanceForNonExistingAccount() {
+        UUID id = UUID.randomUUID();
+
+        when(accountRepository.findById(id)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> accountService.adjustBalance(id, 100));
+
+        assertEquals("Customer not found: " + id, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionForInsufficientFunds() {
+        UUID id = account.getId();
+        account.setAccountBalance(100L); // Set current balance low
+        long amountToDeduct = -200L;
+
+        when(accountRepository.findById(id)).thenReturn(Optional.of(account));
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            accountService.adjustBalance(id, amountToDeduct);
+        });
+
+        assertEquals("Insufficient funds for account: " + id, exception.getMessage());
+    }
+
+
+
 }
